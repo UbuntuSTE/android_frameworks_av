@@ -515,11 +515,7 @@ bool AudioPolicyService::isStreamActive(audio_stream_type_t stream, uint32_t inP
 
 bool AudioPolicyService::isStreamActiveRemotely(audio_stream_type_t stream, uint32_t inPastMs) const
 {
-    if (mpAudioPolicy == NULL) {
-        return 0;
-    }
-    Mutex::Autolock _l(mLock);
-    return mpAudioPolicy->is_stream_active_remotely(mpAudioPolicy, stream, inPastMs);
+    return 0;
 }
 
 bool AudioPolicyService::isSourceActive(audio_source_t source) const
