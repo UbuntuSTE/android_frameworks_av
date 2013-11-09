@@ -162,6 +162,14 @@ public:
                                          audio_format_t *pFormat,
                                          audio_channel_mask_t *pChannelMask,
                                          uint32_t *pLatencyMs,
+                                         audio_output_flags_t flags);
+
+    virtual audio_io_handle_t openOutput(audio_module_handle_t module,
+                                         audio_devices_t *pDevices,
+                                         uint32_t *pSamplingRate,
+                                         audio_format_t *pFormat,
+                                         audio_channel_mask_t *pChannelMask,
+                                         uint32_t *pLatencyMs,
                                          audio_output_flags_t flags,
                                          const audio_offload_info_t *offloadInfo);
 

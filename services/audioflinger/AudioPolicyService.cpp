@@ -1133,17 +1133,7 @@ int AudioPolicyService::setVoiceVolume(float volume, int delayMs)
 
 bool AudioPolicyService::isOffloadSupported(const audio_offload_info_t& info)
 {
-    if (mpAudioPolicy == NULL) {
-        ALOGV("mpAudioPolicy == NULL");
-        return false;
-    }
-
-    if (mpAudioPolicy->is_offload_supported == NULL) {
-        ALOGV("HAL does not implement is_offload_supported");
-        return false;
-    }
-
-    return mpAudioPolicy->is_offload_supported(mpAudioPolicy, &info);
+    return false;
 }
 
 // ----------------------------------------------------------------------------
