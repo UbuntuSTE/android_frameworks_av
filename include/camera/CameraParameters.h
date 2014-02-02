@@ -529,6 +529,13 @@ public:
     // Example values: "lowlight,hdr".
     static const char KEY_LIGHTFX[];
 
+    static const char KEY_ANTI_SHAKE_MODE[];
+    static const char KEY_AUTO_CONTRAST[];
+    static const char KEY_BEAUTY_MODE[];
+    static const char KEY_BLUR_MODE[];
+    static const char KEY_VINTAGE_MODE[];
+    static const char KEY_WDR_MODE[];
+
     // Value for KEY_ZOOM_SUPPORTED or KEY_SMOOTH_ZOOM_SUPPORTED.
     static const char TRUE[];
     static const char FALSE[];
@@ -602,12 +609,18 @@ public:
     // image in some fashion. Only the final image is returned.
     static const char SCENE_MODE_HDR[];
 
+    static const char SCENE_MODE_BACKLIGHT[];
+    static const char SCENE_MODE_DUSKDAWN[];
+    static const char SCENE_MODE_FALLCOLOR[];
+    static const char SCENE_MODE_TEXT[];
+
     // Pixel color formats for KEY_PREVIEW_FORMAT, KEY_PICTURE_FORMAT,
     // and KEY_VIDEO_FRAME_FORMAT
     static const char PIXEL_FORMAT_YUV422SP[];
     static const char PIXEL_FORMAT_YUV420SP[]; // NV21
     static const char PIXEL_FORMAT_YUV422I[]; // YUY2
     static const char PIXEL_FORMAT_YUV420P[]; // YV12
+    static const char PIXEL_FORMAT_YUV420MB[];
     static const char PIXEL_FORMAT_RGB565[];
     static const char PIXEL_FORMAT_RGBA8888[];
     static const char PIXEL_FORMAT_JPEG[];
@@ -668,12 +681,26 @@ public:
     // other modes.
     static const char FOCUS_MODE_CONTINUOUS_PICTURE[];
 
+    static const char FOCUS_MODE_FACEDETECT[];
+    static const char FOCUS_MODE_TOUCHAF[];
+
+    static const char ISO_50[];
+
+    static const char VINTAGE_MODE_BNW[];
+    static const char VINTAGE_MODE_COOL[];
+    static const char VINTAGE_MODE_NORMAL[];
+    static const char VINTAGE_MODE_OFF[];
+    static const char VINTAGE_MODE_WARM[];
+
     // Values for light special effects
     // Low-light enhancement mode
     static const char LIGHTFX_LOWLIGHT[];
     // High-dynamic range mode
     static const char LIGHTFX_HDR[];
 
+    // keys for record stride and slice height
+    static const char KEY_RECORD_STRIDE[];
+    static const char KEY_RECORD_SLICE_HEIGHT[];
 private:
     DefaultKeyedVector<String8,String8>    mMap;
 };

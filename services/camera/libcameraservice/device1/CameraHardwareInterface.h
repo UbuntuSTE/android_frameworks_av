@@ -636,6 +636,7 @@ private:
 
     static int __set_usage(struct preview_stream_ops* w, int usage)
     {
+        usage |= GRALLOC_USAGE_PRIVATE_0;
         ANativeWindow *a = anw(w);
         return native_window_set_usage(a, usage);
     }

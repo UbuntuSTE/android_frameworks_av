@@ -576,7 +576,7 @@ status_t ACodec::configureOutputBuffersFromNativeWindow(
             mNativeWindow.get(),
             def.format.video.nFrameWidth,
             def.format.video.nFrameHeight,
-            def.format.video.eColorFormat);
+            OMXCodec::OmxToHALFormat(def.format.video.eColorFormat));
 
     if (err != 0) {
         ALOGE("native_window_set_buffers_geometry failed: %s (%d)",

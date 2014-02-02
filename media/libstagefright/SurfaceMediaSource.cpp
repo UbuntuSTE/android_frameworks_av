@@ -57,7 +57,7 @@ SurfaceMediaSource::SurfaceMediaSource(uint32_t bufferWidth, uint32_t bufferHeig
     mBufferQueue = new BufferQueue();
     mBufferQueue->setDefaultBufferSize(bufferWidth, bufferHeight);
     mBufferQueue->setConsumerUsageBits(GRALLOC_USAGE_HW_VIDEO_ENCODER |
-            GRALLOC_USAGE_HW_TEXTURE);
+            GRALLOC_USAGE_HW_2D);
 
     sp<ISurfaceComposer> composer(ComposerService::getComposerService());
 
