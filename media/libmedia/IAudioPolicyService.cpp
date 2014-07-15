@@ -186,7 +186,8 @@ public:
                                     uint32_t samplingRate,
                                     audio_format_t format,
                                     audio_channel_mask_t channelMask,
-                                    int audioSession)
+                                    int audioSession,
+                                    audio_input_clients *inputClientId)
     {
         Parcel data, reply;
         data.writeInterfaceToken(IAudioPolicyService::getInterfaceDescriptor());
@@ -194,6 +195,7 @@ public:
         data.writeInt32(samplingRate);
         data.writeInt32(static_cast <uint32_t>(format));
         data.writeInt32(channelMask);
+        data.writeIntPtr((intptr_t)inputClientId);
         data.writeInt32(audioSession);
         remote()->transact(GET_INPUT, data, &reply);
         return static_cast <audio_io_handle_t> (reply.readInt32());
@@ -508,12 +510,15 @@ status_t BnAudioPolicyService::onTransact(
             uint32_t samplingRate = data.readInt32();
             audio_format_t format = (audio_format_t) data.readInt32();
             audio_channel_mask_t channelMask = data.readInt32();
+            audio_input_clients *inputClientId =
+                    (audio_input_clients*) data.readIntPtr();
             int audioSession = data.readInt32();
             audio_io_handle_t input = getInput(inputSource,
                                                samplingRate,
                                                format,
                                                channelMask,
-                                               audioSession);
+                                               audioSession,
+                                               inputClientId);
             reply->writeInt32(static_cast <int>(input));
             return NO_ERROR;
         } break;

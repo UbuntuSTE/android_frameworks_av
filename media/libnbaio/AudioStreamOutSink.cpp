@@ -81,6 +81,8 @@ status_t AudioStreamOutSink::getNextWriteTimestamp(int64_t *timestamp) {
 
 status_t AudioStreamOutSink::getTimestamp(AudioTimestamp& timestamp)
 {
+        return INVALID_OPERATION;
+
     if (mStream->get_presentation_position == NULL) {
         return INVALID_OPERATION;
     }

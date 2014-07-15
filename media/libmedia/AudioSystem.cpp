@@ -605,7 +605,7 @@ audio_io_handle_t AudioSystem::getOutput(audio_stream_type_t stream,
 {
     const sp<IAudioPolicyService>& aps = AudioSystem::get_audio_policy_service();
     if (aps == 0) return 0;
-    return aps->getOutput(stream, samplingRate, format, channelMask, flags, offloadInfo);
+    return aps->getOutput(stream, samplingRate, format, channelMask, flags, NULL);
 }
 
 status_t AudioSystem::startOutput(audio_io_handle_t output,
@@ -637,11 +637,13 @@ audio_io_handle_t AudioSystem::getInput(audio_source_t inputSource,
                                     uint32_t samplingRate,
                                     audio_format_t format,
                                     audio_channel_mask_t channelMask,
-                                    int sessionId)
+                                    audio_in_acoustics_t acoustics,
+                                    int sessionId,
+                                    audio_input_clients *inputClientId)
 {
     const sp<IAudioPolicyService>& aps = AudioSystem::get_audio_policy_service();
     if (aps == 0) return 0;
-    return aps->getInput(inputSource, samplingRate, format, channelMask, sessionId);
+    return aps->getInput(inputSource, samplingRate, format, channelMask, sessionId, inputClientId);
 }
 
 status_t AudioSystem::startInput(audio_io_handle_t input)

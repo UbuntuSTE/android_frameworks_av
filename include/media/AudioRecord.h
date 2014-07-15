@@ -493,6 +493,8 @@ private:
 
     bool                    mInOverrun;         // whether recorder is currently in overrun state
 
+    audio_input_clients     *mpInputClientId;
+
 private:
     class DeathNotifier : public IBinder::DeathRecipient {
     public:

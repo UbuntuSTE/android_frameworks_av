@@ -182,13 +182,23 @@ public:
 
     virtual status_t restoreOutput(audio_io_handle_t output);
 
+    virtual uint32_t *addInputClient(uint32_t clientId);
+
+    virtual status_t removeInputClient(uint32_t *pClientId);
+
     virtual audio_io_handle_t openInput(audio_module_handle_t module,
                                         audio_devices_t *pDevices,
                                         uint32_t *pSamplingRate,
                                         audio_format_t *pFormat,
-                                        audio_channel_mask_t *pChannelMask);
+                                        audio_channel_mask_t *pChannelMask,
+			                                        audio_input_clients *pInputClientId = NULL);
 
-    virtual status_t closeInput(audio_io_handle_t input);
+    virtual status_t closeInput(audio_io_handle_t input, audio_input_clients *inputClientId = NULL);
+    virtual size_t readInput(audio_io_handle_t input,
+                            audio_input_clients inputClientId,
+                            void *buffer,
+                            uint32_t bytes,
+                            uint32_t *pOverwrittenBytes);
 
     virtual status_t setStreamOutput(audio_stream_type_t stream, audio_io_handle_t output);
 
@@ -602,6 +612,7 @@ private:
                 // protected by mLock
                 Vector<AudioSessionRef*> mAudioSessionRefs;
 
+                SortedVector<uint32_t*> mInputClients;
                 float       masterVolume_l() const;
                 bool        masterMute_l() const;
                 audio_module_handle_t loadHwModule_l(const char *name);

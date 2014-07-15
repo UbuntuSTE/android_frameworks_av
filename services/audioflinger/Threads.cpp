@@ -4372,7 +4372,8 @@ AudioFlinger::RecordThread::RecordThread(const sp<AudioFlinger>& audioFlinger,
                                          audio_channel_mask_t channelMask,
                                          audio_io_handle_t id,
                                          audio_devices_t outDevice,
-                                         audio_devices_t inDevice
+                                         audio_devices_t inDevice,
+                                         audio_input_clients pInputClientId
 #ifdef TEE_SINK
                                          , const sp<NBAIO_Sink>& teeSink
 #endif
@@ -4389,7 +4390,7 @@ AudioFlinger::RecordThread::RecordThread(const sp<AudioFlinger>& audioFlinger,
 #endif
 {
     snprintf(mName, kNameLength, "AudioIn_%X", id);
-
+    mInputClientId = pInputClientId;
     readInputParameters();
 }
 
@@ -5286,6 +5287,12 @@ KeyedVector<int, bool> AudioFlinger::RecordThread::sessionIds() const
         }
     }
     return ids;
+}
+
+AudioFlinger::AudioStreamIn* AudioFlinger::RecordThread::getInput() const
+{
+    Mutex::Autolock _l(mLock);
+    return mInput;
 }
 
 AudioFlinger::AudioStreamIn* AudioFlinger::RecordThread::clearInput()

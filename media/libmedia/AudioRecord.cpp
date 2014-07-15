@@ -72,8 +72,14 @@ status_t AudioRecord::getMinFrameCount(
 
 AudioRecord::AudioRecord()
     : mStatus(NO_INIT), mSessionId(0),
+      mpInputClientId(NULL),
       mPreviousPriority(ANDROID_PRIORITY_NORMAL), mPreviousSchedulingGroup(SP_DEFAULT)
 {
+    const sp<IAudioFlinger>& audioFlinger = AudioSystem::get_audio_flinger();
+    if (audioFlinger != 0) {
+        mpInputClientId = (audio_input_clients*)audioFlinger->addInputClient(
+                                                 (uint32_t)AUDIO_INPUT_CLIENT_RECORD);
+    }
 }
 
 AudioRecord::AudioRecord(
@@ -89,10 +95,17 @@ AudioRecord::AudioRecord(
         transfer_type transferType,
         audio_input_flags_t flags)
     : mStatus(NO_INIT), mSessionId(0),
+      mpInputClientId(NULL),
       mPreviousPriority(ANDROID_PRIORITY_NORMAL),
       mPreviousSchedulingGroup(SP_DEFAULT),
       mProxy(NULL)
 {
+    const sp<IAudioFlinger>& audioFlinger = AudioSystem::get_audio_flinger();
+    if (audioFlinger != 0) {
+        mpInputClientId = (audio_input_clients*)audioFlinger->addInputClient(
+                                                 (uint32_t)AUDIO_INPUT_CLIENT_RECORD);
+    }
+
     mStatus = set(inputSource, sampleRate, format, channelMask, frameCount, cbf, user,
             notificationFrames, false /*threadCanCallJava*/, sessionId, transferType);
 }
@@ -116,6 +129,10 @@ AudioRecord::~AudioRecord()
         }
         IPCThreadState::self()->flushCommands();
         AudioSystem::releaseAudioSessionId(mSessionId);
+    }
+    const sp<IAudioFlinger>& audioFlinger = AudioSystem::get_audio_flinger();
+    if (audioFlinger != 0) {
+        audioFlinger->removeInputClient((uint32_t*)mpInputClientId);
     }
 }
 
@@ -342,6 +359,10 @@ void AudioRecord::stop()
         setpriority(PRIO_PROCESS, 0, mPreviousPriority);
         set_sched_policy(0, mPreviousSchedulingGroup);
     }
+    const sp<IAudioFlinger>& audioFlinger = AudioSystem::get_audio_flinger();
+    if (audioFlinger != 0) {
+        audioFlinger->removeInputClient((uint32_t*)mpInputClientId);
+    }
 }
 
 bool AudioRecord::stopped() const
@@ -456,7 +477,10 @@ status_t AudioRecord::openRecord_l(size_t epoch)
     }
 
     audio_io_handle_t input = AudioSystem::getInput(mInputSource, mSampleRate, mFormat,
-            mChannelMask, mSessionId);
+            mChannelMask,
+            (audio_in_acoustics_t)0,
+            mSessionId,
+            mpInputClientId);
     if (input == 0) {
         ALOGE("Could not get audio input for record source %d", mInputSource);
         return BAD_VALUE;

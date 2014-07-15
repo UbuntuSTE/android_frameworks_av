@@ -851,7 +851,8 @@ public:
                     audio_channel_mask_t channelMask,
                     audio_io_handle_t id,
                     audio_devices_t outDevice,
-                    audio_devices_t inDevice
+                    audio_devices_t inDevice,
+                    audio_input_clients pinputClientId
 #ifdef TEE_SINK
                     , const sp<NBAIO_Sink>& teeSink
 #endif
@@ -894,6 +895,7 @@ public:
             bool        stop(RecordTrack* recordTrack);
 
             void        dump(int fd, const Vector<String16>& args);
+            AudioStreamIn* getInput() const;
             AudioStreamIn* clearInput();
             virtual audio_stream_t* stream() const;
 
@@ -951,6 +953,7 @@ private:
             const uint32_t                      mReqChannelCount;
             const uint32_t                      mReqSampleRate;
             ssize_t                             mBytesRead;
+            audio_input_clients                 mInputClientId;
             // sync event triggering actual audio capture. Frames read before this event will
             // be dropped and therefore not read by the application.
             sp<SyncEvent>                       mSyncStartEvent;
